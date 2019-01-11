@@ -6,11 +6,14 @@
 </head>
 <body>
 
+
 <div id="example1"></div>
+<div id="example2"></div>
 
 <script type="text/javascript" src="../js/react.development.js"></script>
 <script type="text/javascript" src="../js/react-dom.development.js"></script>
 <script type="text/javascript" src="../js/babel.min.js"></script>
+<script type="text/javascript" src="../js/prop-types.js"></script>
 
 <script type="text/babel">
 
@@ -19,6 +22,61 @@
   1). 如果性别没有指定, 默认为男
   2). 如果年龄没有指定, 默认为18
   */
+
+  //自定义组件(两种方式)
+  class Person extends React.Component{
+      //初始化状态
+    constructor (props) {
+      super(props)
+      this.state = {
+
+      }
+  }
+
+
+  render(){
+        console.log('render()',this);
+      const {name,age,sex} =this.props
+
+          return (
+              <ul>
+                  <li>姓名：{name}</li>
+                  <li>年龄：{age}</li>
+                  <li>性别：{sex}</li>
+              </ul>
+          )
+      }
+  }
+
+  Person.propTypes ={
+      name:PropTypes.string.isRequired,
+      age:PropTypes.number,
+      sex:PropTypes.string
+  }
+
+  Person.defaultProps ={
+      sex:'男',
+      age:17
+
+  }
+
+  const p1 ={
+      name:'Tom',
+      age:18,
+      sex:'男'
+  }
+
+
+  ReactDOM.render(<Person name={p1.name} age={p1.age} sex={p1.sex}/>,document.getElementById('example1'))
+
+
+  const p2 ={
+      name:'Jack',
+      age:18,
+      sex:'女'
+  }
+  ReactDOM.render(<Person name={p2.name}/>,document.getElementById('example2'))
+
 
 </script>
 </body>

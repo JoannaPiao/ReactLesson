@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>02_JSX</title>
+</head>
+<body>
+  <div id="test1"></div>
+  <div id="test2"></div>
+
+  <script type="text/javascript" src="../js/react.development.js"></script>
+  <script type="text/javascript" src="../js/react-dom.development.js"></script>
+  <script type="text/javascript" src="../js/babel.min.js"></script>
+  <script type="text/javascript">
+    // 1. 创建虚拟DOM
+    /*方式一: 纯JS(一般不用)创建虚拟DOM元素对象*/
+    let myId = 'abc'
+    let myName = 'tom'
+    const a = React.createElement('h3',{name:myName,age:myId},'atguigu')
+    // 2. 渲染到真实页面
+    ReactDOM.render(a,document.getElementById('test1'))
+
+  </script>
+
+  <script type="text/babel">
+    // 1. 创建虚拟DOM
+    const vDom = <h3 id={myId} name={myName}>{'aitguigu'}</h3>
+    // 2. 渲染到真实页面
+    ReactDOM.render(a,document.getElementById('test2'))
+  </script>
+</body>
+</html>

@@ -13,93 +13,111 @@
   <script type="text/javascript" src="../js/prop-types.js"></script>
   <script type="text/javascript" src="../js/babel.min.js"></script>
   <script type="text/babel">
-    /*
-    1)拆分组件: 拆分界面,抽取组件
-    2)实现静态组件: 使用组件实现静态页面效果
-    3)实现动态组件
-        ① 动态显示初始化数据
-        ② 交互功能(从绑定事件监听开始)
-     */
-    // 应用组件
+
     class App extends React.Component {
-      constructor (props) {
-        super(props)
-        // 初始化状态
-        this.state = {
-          todos: ['吃饭', '睡觉', '打豆豆']
-        }
-        this.add = this.add.bind(this)
+
+      // 初始化状态
+      state = {
+        todos: [
+          'A',
+          'B',
+          'C',
+          'D'
+        ]
       }
-      add (todo) {
+
+      // 向todos中添加todo
+      addTodo = (todo) => {
+        // 得到状态数据todos
         const {todos} = this.state
+        // 更新状态数据
         todos.unshift(todo)
-        //更新状态
-        this.setState({todos})
+        // 更新状态
+        this.setState({
+          todos
+        })
       }
+
+
       render () {
+        console.log('App render()')
+        // 读取内部的状态数据
         const {todos} = this.state
+
         return (
           <div>
-            <TodoAdd add={this.add} count={todos.length} />
-            <TodoList todos={todos} />
+            <h1>TODO LIST</h1>
+            <Add size={todos.length} addTodo={this.addTodo}/>
+            <List todos={todos}/>
           </div>
         )
       }
     }
 
-    // 添加todo组件
-    class TodoAdd extends React.Component {
-      constructor (props) {
-        super(props)
-        this.addTodo = this.addTodo.bind(this)
+    class Add extends React.Component {
+
+      static propTypes = {
+        size: PropTypes.number.isRequired,
+        addTodo: PropTypes.func.isRequired
       }
-      addTodo () {
-        // 读取输入数据
-        const text = this.input.value.trim()
-        // 查检
-        if(!text) {
-          return
-        }
-        // 保存到todos
-        this.props.add(text)
-        // 清除输入
-        this.input.value = ''
+
+      addTodo = () => {
+        // 1. 得到输入的todo
+        const todo = this.refs.todo.value
+        // 2. 将todo添加到todos中
+        this.props.addTodo(todo)
+        // 3. 清除输入
+        this.refs.todo.value = ''
       }
+
       render () {
+
+        const {size} = this.props
+
         return (
           <div>
-            <h2>Simple TODO List</h2>
-            <input type="text" ref={input => this.input=input}/>
-            <button onClick={this.addTodo}>Add #{this.props.count}</button>
+            <input type="text" ref="todo"/>
+            <button onClick={this.addTodo}>Add #{size}</button>
           </div>
         )
       }
     }
-    TodoAdd.propTypes = {
-      add: PropTypes.func.isRequired,
-      count: PropTypes.number.isRequired
-    }
 
-    // todo列表组件
-    class TodoList extends React.Component {
+    class List extends React.Component {
+
+      // 声明接收哪些标签属性
+      static propTypes = {
+        todos: PropTypes.array.isRequired
+      }
+
       render () {
+        // 读取外部传入的属性数据
         const {todos} = this.props
+
         return (
           <ul>
             {
-              todos.map((todo, index) => <li key={index}>{todo}</li>)
+              todos.map((todo, index) => {
+                return <li key={index}>{todo}</li>
+              })
             }
           </ul>
         )
       }
     }
-    TodoList.propTypes = {
-      todos: PropTypes.array.isRequired
+    
+    
+    ReactDOM.render(<App/>, document.getElementById('example'))
+
+
+  /*  var fn = function () {
+
     }
 
-    // 渲染应用组件标签
-    ReactDOM.render(<App />, document.getElementById('example'))
+    function fn2(f) {
 
+    }
+    fn2(fn)*/
   </script>
 </body>
 </html>
